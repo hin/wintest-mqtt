@@ -1,0 +1,12 @@
+version: "3"
+services:
+    wintest-mqtt:
+        build: .
+        environment:
+            - MQTT_URL=mqtt://10.1.1.40:1883
+            - TOPIC_SUMMARY=sk0ux/win-test/summary
+            - TOPIC_GAB=sk0ux/win-test/gab
+            - TOPIC_STATUS=sk0ux/win-test/status
+            - WINTEST_LOCAL_ADDRESS=0.0.0.0:9871
+            - WINTEST_BROADCAST_ADDRESS=10.1.1.40:9871
+        network_mode: "host"
