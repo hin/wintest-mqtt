@@ -35,7 +35,7 @@ async def on_gab_out(mqtt_client, msg):
     print('Published:', msg)
 
 def parse_address(str):
-    v = ':'.split(str)
+    v = str.split(':')
     return (v[0], int(v[1]))
 
 async def main(argv):
@@ -46,8 +46,8 @@ async def main(argv):
     await mqc.connect(os.environ['MQTT_URL'])
     print('connected to mqtt')
 
-    local_addr = parse_address(os.environ['WINTEST_LOCAL_ADDR'])
-    broadcast_addr = parse_address(os.environ['WINTEST_BROADCAST_ADDR'])
+    local_addr = parse_address(os.environ['WINTEST_LOCAL_ADDRESS'])
+    broadcast_addr = parse_address(os.environ['WINTEST_BROADCAST_ADDRESS'])
     wt = WintestProtocol(loop, local_addr, broadcast_addr)
     await wt.connect()
     wt.add_handler('summary', functools.partial(on_summary, mqc))
