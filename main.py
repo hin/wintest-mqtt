@@ -18,13 +18,13 @@ async def print_message(message):
 
 async def on_summary(mqtt_client, msg):
     json_msg = json.dumps(msg, default=serializer)
-    await mqtt_client.publish(os.environ('TOPIC_SUMMARY'),
+    await mqtt_client.publish(os.environ['TOPIC_SUMMARY'],
         json_msg.encode('utf-8'), qos=QOS_2, retain=True)
     print('Published:', msg)
 
 async def on_status(mqtt_client, msg):
     json_msg = json.dumps(msg, default=serializer)
-    await mqtt_client.publish('%s/%s'%(os.environ('TOPIC_STATUS'), msg['station']),
+    await mqtt_client.publish('%s/%s'%(os.environ['TOPIC_STATUS'], msg['station']),
         json_msg.encode('utf-8'), qos=QOS_2, retain=True)
     print('Published:', msg)
 
