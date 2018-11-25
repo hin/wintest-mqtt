@@ -34,6 +34,12 @@ async def on_gab_out(mqtt_client, msg):
         json_msg.encode('utf-8'), qos=QOS_2, retain=True)
     print('Published:', msg)
 
+async def on_addqso(mqtt_client, msg):
+    json_msg = json.dumps(msg, default=serializer)
+    await mqtt_client.publish('%s/%s'%(os.environ['TOPIC_ADDQSO'], msg['station']),
+        json_msg.encode('utf-8'), qos=QOS_2, retain=True)
+    print('QSO:', '%s/%s'%(os.environ['TOPIC_ADDQSO'], msg['station']), msg)
+
 def parse_address(str):
     v = str.split(':')
     return (v[0], int(v[1]))
@@ -53,6 +59,7 @@ async def main(argv):
     wt.add_handler('summary', functools.partial(on_summary, mqc))
     wt.add_handler('gab', functools.partial(on_gab_out, mqc))
     wt.add_handler('status', functools.partial(on_status, mqc))
+    wt.add_handler('addqso', functools.partial(on_addqso, mqc))
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
